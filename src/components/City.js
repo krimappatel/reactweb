@@ -45,7 +45,7 @@ function City(props) {
                 />
                 {currcity?<Weather currcity={currcity} latlon={latlon}/>:''}
             </Stack>
-            :<div className='spinner'><Spinner  animation="border" variant="light"/></div>}
+            :<div className='spinner'><Spinner  animation="border" variant="secondary"/></div>}
     </>
   )
 }

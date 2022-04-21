@@ -33,7 +33,8 @@ useEffect(()=>{
             renderInput={(params) => <TextField sx={{color:'white'}} {...params} placeholder='Search By Country' />}
          />
          {currcou? <City currcou={currcou.name}/>:''}
-      </Stack>:<div className='spinner'><Spinner  animation="border" variant="light" /></div>}
+      </Stack>:
+      <div className='spinner'><Spinner  animation="border" variant="secondary" /></div>}
       </>
     );
 }
