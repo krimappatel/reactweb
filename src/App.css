@@ -27,7 +27,49 @@
 .App-link {
   color: #61dafb;
 }
+.weather-box{
+  background-color: #282c34 ;
+  margin: 10% 33%;
+  width:500px;
+  height:400px;
+  border:1px solid gray;
+  text-align: center;
+  color: white;
+}
+.searchInputs{
+  position: relative;
+}
+/* .form-inline
+{
+  margin:25%;
+  border: 1px solid lightgray;
+  width: 50%;
+  height: 50%;
+  position: relative;
+} */
+.list-data{
+  position:absolute;
+  height:200px;
+  width: inherit;
+  overflow: hidden;
+  overflow-y: auto;
+  background-color: #282c34;
+}
+.list-data::-webkit-scrollbar{
+  display: none;
+}
+.list{
+display: flex;
+list-style-type: none;
+padding: 5px;
+}
 
+.list:hover{
+  background-color: dimgray;
+}
+.spinner{
+  margin-left: 15%;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -36,3 +78,6 @@
     transform: rotate(360deg);
   }
 }
+/* @media only screen and (min-width: 780px){
+  .weather-box{width: 50%;}
+} */
