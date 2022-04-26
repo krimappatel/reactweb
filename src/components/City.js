@@ -7,6 +7,7 @@ import axios from 'axios'
 import Weather from './Weather';
 import {Box} from '@mui/system'
 import context from './Context'
+import { getLatlon } from './Api';
 
 function City({cities}) {
     const {city, updatecurrcity,latLon,updateLatLon}= useContext(context)
@@ -15,17 +16,25 @@ function City({cities}) {
     const[citiesloader,setCitiesloader]=useState(true)
 
     useEffect(() => {
+      (async()=>{
         updatecurrcity(currcity)
         setCitiesloader(true)
         if(currcity) {
-          const getLatUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${currcity}&appid=254fe8952ba6d135cd7dc4baee714199`
-          const getItem = async (url) => {
-            const result = await axios.get(url);
-            setLatLonVal({ lat: result.data[0].lat, lon: result.data[0].lon });
-    
-          };
-          getItem(getLatUrl);
+          const latlon = await getLatlon(currcity)
+          setLatLonVal({lat:latlon.lat,lon:latlon.lon})
         }
+      })();
+        // updatecurrcity(currcity)
+        // setCitiesloader(true)
+        // if(currcity) {
+        //   const getLatUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${currcity}&appid=254fe8952ba6d135cd7dc4baee714199`
+        //   const getItem = async (url) => {
+        //     const result = await axios.get(url);
+        //     setLatLonVal({ lat: result.data[0].lat, lon: result.data[0].lon });
+    
+        //   };
+        //   getItem(getLatUrl);
+        // }
         // eslint-disable-next-line
       }, [currcity]);
 

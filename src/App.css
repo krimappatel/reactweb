@@ -34,8 +34,13 @@
   width:600px;
   height:auto;
   border:1px solid gray;
+  border-radius: 3%;
   text-align: center;
   color: white;
+}
+.weather-box h1{
+  font-family: 'Times New Roman';
+  font-size: 40px;
 }
 .searchInputs{
   position: relative;

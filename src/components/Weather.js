@@ -2,6 +2,7 @@ import React from 'react'
 import {useEffect,useState,useContext} from 'react'
 import axios from 'axios';
 import context from './Context'
+import { getWeather } from './Api';
 
 function Weather(props) {
     const{latLon}=useContext(context)
@@ -9,15 +10,16 @@ function Weather(props) {
     const[weatherloader,setWeatherloader]=useState(true)
      
      useEffect(()=>{
-         setWeatherloader(true)
+       (async()=>{
+        setWeatherloader(true)
         if(latLon.lat && latLon.lon){
-            const url=`https://api.openweathermap.org/data/2.5/weather?lat=${latLon.lat}&lon=${latLon.lon}&appid=254fe8952ba6d135cd7dc4baee714199`;
-            axios.get(url)
-            .then(res=>res.data)
-            .then(data=>setWeather(data.weather[0]))
+            const weather=await getWeather(latLon)
+            setWeather(weather)
             setWeatherloader(false)
             
         }  
+       })();
+         
      },[latLon])
 
   return (
@@ -25,7 +27,7 @@ function Weather(props) {
         <div key={weather.id}>
             <p>Mostly: {weather.main}</p>
             <p>Description: {weather.description}</p>
-            <img src={`http://openweathermap.org/img/wn/${weather.icon}@2x.png`} alt="nodata"/>
+            <img src={`http://openweathermap.org/img/wn/${weather.icon}@4x.png`} alt="nodata"/>
         </div>
     </>
       

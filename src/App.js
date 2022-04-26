@@ -8,6 +8,7 @@ import axios from 'axios'
 import {Spinner} from 'react-bootstrap'
 import {Box} from '@mui/system'
 import context from './components/Context'
+import {getCities, getCountries} from './components/Api';
 
 function App() {
 const {country,updatecurr,updatecurrcity}=useContext(context)
@@ -17,32 +18,41 @@ const [cities,setCities]=useState([]);
 const[loadingcountries,setLoadingcountries]=useState(true)
 const[citiesloader,setCitiesloader]=useState(true)
 
-  useEffect(()=>{
-    setLoadingcountries(true)
-     const url=`https://countriesnow.space/api/v0.1/countries/iso`;
-          axios.get(url)
-         .then(res=>res.data)
-         .then(data=>{
-          setCountries(data.data)
-          setLoadingcountries(false)
-          })
+  useEffect(()=>{  
+    (async () => {
+			const countries = await getCountries();
+      setLoadingcountries(false)
+			setCountries(countries)  
+		})();
     
  },[])
  useEffect(()=>{ 
-    if(country)
-    {
-       setCitiesloader(true)
-       updatecurrcity('')
-       setCities([])
+   (async()=>{
+     if(country){
+      setCitiesloader(true)
+      updatecurrcity('')
+      setCities([])
+      const cities= await getCities(country);
+      setCitiesloader(false) 
+      setCities(cities)
+     }  
+   }
+   )();
+   
+    // if(country)
+    // {
+    //    setCitiesloader(true)
+    //    updatecurrcity('')
+    //    setCities([])
        
-        const url=`https://countriesnow.space/api/v0.1/countries/cities`;
-            axios.post(url,{"country":country})
-        .then(res=>res.data)
-        .then(data=>setCities(data.data))  
+    //     const url=`https://countriesnow.space/api/v0.1/countries/cities`;
+    //         axios.post(url,{"country":country})
+    //     .then(res=>res.data)
+    //     .then(data=>setCities(data.data))  
         
-        setCitiesloader(false) 
+    //     setCitiesloader(false) 
         
-    } 
+    // } 
  },[country])
  useEffect(()=>{
     if(currcou){
@@ -60,7 +70,7 @@ const[citiesloader,setCitiesloader]=useState(true)
     <div className='weather-box'>
         <h3>Weather Info.</h3>
         {loadingcountries  ? <div className='spinner'><Spinner  animation="border" variant="secondary" /></div>:
-         <Stack sx={{width:"auto",mt:6}}>
+         <Stack sx={{width:500,margin:6}}>
             <Autocomplete
                id="combo-box-demo"
                options={countries}
