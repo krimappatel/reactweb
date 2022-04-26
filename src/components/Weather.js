@@ -14,7 +14,7 @@ function Weather(props) {
             const url=`https://api.openweathermap.org/data/2.5/weather?lat=${latLon.lat}&lon=${latLon.lon}&appid=254fe8952ba6d135cd7dc4baee714199`;
             axios.get(url)
             .then(res=>res.data)
-            .then(data=>setWeather(data.weather))
+            .then(data=>setWeather(data.weather[0]))
             setWeatherloader(false)
             
         }  
@@ -22,13 +22,11 @@ function Weather(props) {
 
   return (
     <>
-    {weather.map((data)=>
-            <div key={data.id}>
-                <p>Mostly: {data.main}</p>
-                <p>Description: {data.description}</p>
-                <img src={`http://openweathermap.org/img/wn/${data.icon}@2x.png`} alt="nodata"/>
-            </div>)
-        }
+        <div key={weather.id}>
+            <p>Mostly: {weather.main}</p>
+            <p>Description: {weather.description}</p>
+            <img src={`http://openweathermap.org/img/wn/${weather.icon}@2x.png`} alt="nodata"/>
+        </div>
     </>
       
   )
