@@ -1,51 +1,67 @@
-import React,{useEffect,useState} from 'react'
+import React,{useEffect,useState,useContext} from 'react'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import {Spinner} from 'react-bootstrap'
 import Stack from "@mui/material/Stack";
 import axios from 'axios'
 import Weather from './Weather';
+import {Box} from '@mui/system'
+import context from './Context'
 
 function City(props) {
-    const [currcity,setCurrcity]=useState('');
-    const [cities,setCities]=useState([]);
-    const [latlon,setLatlon]=useState(null);
-    const[loader,setLoader]=useState(false)
-    const {currcou}=props;
+    const {cities}=props
+    const {city, updatecurrcity,latLon,updateLatLon}= useContext(context)
+    const[latLonVal, setLatLonVal] = useState({ lat: latLon.lat, lon: latLon.lon });
+    const [currcity,setCurrcity]=useState(city);
+    const[citiesloader,setCitiesloader]=useState(true)
 
-    useEffect(()=>{
-        if (currcou){
-            const url=`https://countriesnow.space/api/v0.1/countries/cities`;
-             axios.post(url,{"country":currcou})
-            .then(res=>res.data)
-            .then(data=>setCities(data.data))  
-             setLoader(true)   
-        }   
-     },[currcou])
-     useEffect(()=>{
-        if (currcity){
-            const url=`http://api.openweathermap.org/geo/1.0/direct?q=${currcity}&limit=1&appid=254fe8952ba6d135cd7dc4baee714199`;
-            axios.get(url)
-            .then(res=>res.data)
-            .then(data=>setLatlon(data))  
-
+    useEffect(() => {
+        updatecurrcity(currcity)
+        setCitiesloader(true)
+        if(currcity) {
+          const getLatUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${currcity}&appid=254fe8952ba6d135cd7dc4baee714199`
+          const getItem = async (url) => {
+            const result = await axios.get(url);
+            setLatLonVal({ lat: result.data[0].lat, lon: result.data[0].lon });
+    
+          };
+          getItem(getLatUrl);
         }
-     },[currcity])
+        // eslint-disable-next-line
+      }, [currcity]);
+
+      useEffect(()=>{
+        if(latLonVal){
+            updateLatLon(latLonVal);
+            setCitiesloader(false)
+        };
+        // eslint-disable-next-line
+      },[latLonVal])
+    
+
   return (
     <>
-        {loader ?
+        {/* {citiesloader ? <div className='spinner'><Spinner  animation="border" variant="secondary"/></div>: */}
             <Stack sx={{width:"auto",mt:6}}>
                 <Autocomplete
                     id="combo-box-demo"
                     options={cities}
-                    getOptionLabel={(option)=>{ return option}}
-                    onChange={(event,value)=>{setCurrcity(value);}}
+                    value={currcity}
+                    loading 
+                    getOptionLabel={(option)=> option}
+                    onChange={(event,value)=>{setCurrcity(value)}}
                     sx={{width:"inherit",bgcolor:'white'}}
                     renderInput={(params) => <TextField sx={{color:'white'}} {...params} placeholder="Search By City" />}
+                    renderOption={(props,cities)=>(
+                        <Box components='li' {...props} key={cities}>
+                           {cities}
+                        </Box>
+                     )}
                 />
-                {currcity?<Weather currcity={currcity} latlon={latlon}/>:''}
+                {city  ? citiesloader ? <div className='spinner'><Spinner  animation="border" variant="secondary"/></div>:<Weather/>:''}
             </Stack>
-            :<div className='spinner'><Spinner  animation="border" variant="secondary"/></div>}
+            {/* } */}
+            {/* {currcity  ? <Weather currcity={currcity} latlon={latlon}/>:''} */}
     </>
   )
 }
