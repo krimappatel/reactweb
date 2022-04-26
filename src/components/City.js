@@ -8,8 +8,7 @@ import Weather from './Weather';
 import {Box} from '@mui/system'
 import context from './Context'
 
-function City(props) {
-    const {cities}=props
+function City({cities}) {
     const {city, updatecurrcity,latLon,updateLatLon}= useContext(context)
     const[latLonVal, setLatLonVal] = useState({ lat: latLon.lat, lon: latLon.lon });
     const [currcity,setCurrcity]=useState(city);
@@ -58,10 +57,15 @@ function City(props) {
                         </Box>
                      )}
                 />
-                {city  ? citiesloader ? <div className='spinner'><Spinner  animation="border" variant="secondary"/></div>:<Weather/>:''}
+                {city  ? ( 
+                citiesloader ? (
+                <div className='spinner'><Spinner  animation="border" variant="secondary"/></div>
+                )
+                :<Weather/>
+                )
+                :''}
             </Stack>
-            {/* } */}
-            {/* {currcity  ? <Weather currcity={currcity} latlon={latlon}/>:''} */}
+            
     </>
   )
 }

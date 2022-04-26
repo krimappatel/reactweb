@@ -76,7 +76,11 @@ const[citiesloader,setCitiesloader]=useState(true)
                   </Box>
                )}
             />    
-            {currcou ? (citiesloader ? <div className='spinner'><Spinner  animation="border" variant="secondary" /></div>:<City cities={cities} />):''}
+            {currcou ? (
+              citiesloader ? 
+              <div className='spinner'><Spinner  animation="border" variant="secondary" /></div>
+              :<City cities={cities} />
+              ):''}
          </Stack>
          }
     </div>
