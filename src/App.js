@@ -1,17 +1,14 @@
 import './App.css';
-import { useEffect,useState,useContext} from 'react';
+import { useEffect,useState} from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Stack from "@mui/material/Stack";
 import City from './components/City';
-import axios from 'axios'
 import {Spinner} from 'react-bootstrap'
 import {Box} from '@mui/system'
-import context from './components/Context'
 import {getCities, getCountries} from './components/Api';
 
 function App() {
-const {country,updatecurr,updatecurrcity}=useContext(context)
 const[countries,setCountries]=useState([])
 const[currcou,setCurrcou]=useState(null)
 const [currcity,setCurrcity]=useState(null);
@@ -21,10 +18,10 @@ const[citiesloader,setCitiesloader]=useState(true)
 
   useEffect(()=>{  
     (async () => {
-			const countries = await getCountries();
-      setLoadingcountries(false)
-			setCountries(countries)  
-		})();
+	const countries = await getCountries();
+      	setLoadingcountries(false)
+	setCountries(countries)  
+    })();
     
  },[])
  useEffect(()=>{ 
@@ -56,13 +53,7 @@ const[citiesloader,setCitiesloader]=useState(true)
         
     // } 
  },[currcou])
-//  useEffect(()=>{
-//     if(currcou){
-//        updatecurr(currcou)
-//        setCitiesloader(true)
-//     // eslint-disable-next-line
-//     }
-//  },[currcou])
+
  
  const getCurrcou=(val)=>{
     setCurrcou(val.name) 
@@ -93,7 +84,6 @@ const[citiesloader,setCitiesloader]=useState(true)
               <div className='spinner'><Spinner  animation="border" variant="secondary" /></div>
               :<City cities={cities} />
               ):''}
-              {/* {currcou && <City cities={cities}/>} */}
          </Stack>
          }
     </div>
