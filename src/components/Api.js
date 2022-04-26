@@ -16,8 +16,8 @@ export const getLatlon=async(currcity)=>{
           return response.data[0]
             // setLatLonVal({ lat: result.data[0].lat, lon: result.data[0].lon });
 }
-export const getWeather=async(latLon)=>{
-      const url=`https://api.openweathermap.org/data/2.5/weather?lat=${latLon.lat}&lon=${latLon.lon}&appid=254fe8952ba6d135cd7dc4baee714199`;
+export const getWeather=async(latlon)=>{
+      const url=`https://api.openweathermap.org/data/2.5/weather?lat=${latlon.lat}&lon=${latlon.lon}&appid=254fe8952ba6d135cd7dc4baee714199`;
             const response=await axios.get(url)
             return response.data.weather[0]
 }

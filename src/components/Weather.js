@@ -1,26 +1,23 @@
 import React from 'react'
 import {useEffect,useState,useContext} from 'react'
-import axios from 'axios';
-import context from './Context'
 import { getWeather } from './Api';
 
-function Weather(props) {
-    const{latLon}=useContext(context)
+function Weather({latlon}) {
     const[weather,setWeather]=useState([])
     const[weatherloader,setWeatherloader]=useState(true)
      
      useEffect(()=>{
        (async()=>{
         setWeatherloader(true)
-        if(latLon.lat && latLon.lon){
-            const weather=await getWeather(latLon)
+        if(latlon.lat && latlon.lon){
+            const weather=await getWeather(latlon)
             setWeather(weather)
             setWeatherloader(false)
             
         }  
        })();
          
-     },[latLon])
+     },[latlon])
 
   return (
     <>

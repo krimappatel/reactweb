@@ -10,18 +10,19 @@ import context from './Context'
 import { getLatlon } from './Api';
 
 function City({cities}) {
-    const {city, updatecurrcity,latLon,updateLatLon}= useContext(context)
-    const[latLonVal, setLatLonVal] = useState({ lat: latLon.lat, lon: latLon.lon });
-    const [currcity,setCurrcity]=useState(city);
+    // const {city, updatecurrcity,latLon,updateLatLon}= useContext(context)
+    const[latLonVal, setLatLonVal] = useState({ lat: null, lon: null });
+    const [currcity,setCurrcity]=useState(null);
     const[citiesloader,setCitiesloader]=useState(true)
 
     useEffect(() => {
       (async()=>{
-        updatecurrcity(currcity)
+        setCurrcity(currcity)
         setCitiesloader(true)
         if(currcity) {
           const latlon = await getLatlon(currcity)
-          setLatLonVal({lat:latlon.lat,lon:latlon.lon})
+          console.log(latlon)
+          setLatLonVal({lat:latlon.lat,lon:latlon.lon});
         }
       })();
         // updatecurrcity(currcity)
@@ -40,7 +41,6 @@ function City({cities}) {
 
       useEffect(()=>{
         if(latLonVal){
-            updateLatLon(latLonVal);
             setCitiesloader(false)
         };
         // eslint-disable-next-line
@@ -66,11 +66,11 @@ function City({cities}) {
                         </Box>
                      )}
                 />
-                {city  ? ( 
+                {currcity  ? ( 
                 citiesloader ? (
                 <div className='spinner'><Spinner  animation="border" variant="secondary"/></div>
                 )
-                :<Weather/>
+                :<Weather latlon={latLonVal}/>
                 )
                 :''}
             </Stack>

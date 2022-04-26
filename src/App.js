@@ -13,7 +13,8 @@ import {getCities, getCountries} from './components/Api';
 function App() {
 const {country,updatecurr,updatecurrcity}=useContext(context)
 const[countries,setCountries]=useState([])
-const[currcou,setCurrcou]=useState(country)
+const[currcou,setCurrcou]=useState(null)
+const [currcity,setCurrcity]=useState(null);
 const [cities,setCities]=useState([]);
 const[loadingcountries,setLoadingcountries]=useState(true)
 const[citiesloader,setCitiesloader]=useState(true)
@@ -28,11 +29,12 @@ const[citiesloader,setCitiesloader]=useState(true)
  },[])
  useEffect(()=>{ 
    (async()=>{
-     if(country){
+     if(currcou){
+      setCurrcou(currcou)
       setCitiesloader(true)
-      updatecurrcity('')
+      setCurrcity('')
       setCities([])
-      const cities= await getCities(country);
+      const cities= await getCities(currcou);
       setCitiesloader(false) 
       setCities(cities)
      }  
@@ -53,14 +55,14 @@ const[citiesloader,setCitiesloader]=useState(true)
     //     setCitiesloader(false) 
         
     // } 
- },[country])
- useEffect(()=>{
-    if(currcou){
-       updatecurr(currcou)
-       setCitiesloader(true)
-    // eslint-disable-next-line
-    }
  },[currcou])
+//  useEffect(()=>{
+//     if(currcou){
+//        updatecurr(currcou)
+//        setCitiesloader(true)
+//     // eslint-disable-next-line
+//     }
+//  },[currcou])
  
  const getCurrcou=(val)=>{
     setCurrcou(val.name) 
@@ -91,6 +93,7 @@ const[citiesloader,setCitiesloader]=useState(true)
               <div className='spinner'><Spinner  animation="border" variant="secondary" /></div>
               :<City cities={cities} />
               ):''}
+              {/* {currcou && <City cities={cities}/>} */}
          </Stack>
          }
     </div>
