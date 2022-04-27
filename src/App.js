@@ -1,23 +1,25 @@
 import './App.css';
-import { useEffect,useState,useContext} from 'react';
+import { useEffect,useState} from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Stack from "@mui/material/Stack";
 import City from './components/City';
-import axios from 'axios'
 import {Spinner} from 'react-bootstrap'
 import {Box} from '@mui/system'
-import context from './components/Context'
-import {getCities, getCountries} from './components/Api';
+import {getCities, getCountries,getLatlon,getWeather} from './components/Api';
+import Weather from './components/Weather.js';
+
 
 function App() {
-const {country,updatecurr,updatecurrcity}=useContext(context)
 const[countries,setCountries]=useState([])
 const[currcou,setCurrcou]=useState(null)
 const [currcity,setCurrcity]=useState(null);
 const [cities,setCities]=useState([]);
 const[loadingcountries,setLoadingcountries]=useState(true)
 const[citiesloader,setCitiesloader]=useState(true)
+const[weatherloader,setWeatherloader]=useState(true)
+const[latLon, setLatLonVal] = useState({ lat: null, lon: null });
+const[weather,setWeather]=useState([]);
 
   useEffect(()=>{  
     (async () => {
@@ -56,13 +58,31 @@ const[citiesloader,setCitiesloader]=useState(true)
         
     // } 
  },[currcou])
-//  useEffect(()=>{
-//     if(currcou){
-//        updatecurr(currcou)
-//        setCitiesloader(true)
-//     // eslint-disable-next-line
-//     }
-//  },[currcou])
+
+ useEffect(() => {
+  (async()=>{
+    setCurrcity(currcity)
+    // setWeatherloader(true)
+    if(currcity) {
+      const latlon =  await getLatlon(currcity)
+      console.log(latlon)
+      setLatLonVal({lat:latlon.lat,lon:latlon.lon});
+    }
+  })();
+  }, [currcity]);
+
+  useEffect(()=>{
+    (async()=>{
+     setWeatherloader(true)
+     if(latLon.lat && latLon.lon){
+         const weather= await getWeather(latLon)
+         setWeather(weather)
+         setWeatherloader(false)       
+     }  
+    })();
+      
+  },[latLon])
+
  
  const getCurrcou=(val)=>{
     setCurrcou(val.name) 
@@ -88,12 +108,20 @@ const[citiesloader,setCitiesloader]=useState(true)
                   </Box>
                )}
             />    
-            {currcou ? (
+            {currcou && (
               citiesloader ? 
               <div className='spinner'><Spinner  animation="border" variant="secondary" /></div>
-              :<City cities={cities} />
-              ):''}
-              {/* {currcou && <City cities={cities}/>} */}
+              :<City cities={cities} currcity={currcity} setCurrcity={setCurrcity}/>
+              )}
+
+              {currcity && (
+                weatherloader ? (
+                <div className='spinner'><Spinner  animation="border" variant="secondary"/></div>
+                )
+                :<Weather weather={weather}/>
+                )
+                }
+                
          </Stack>
          }
     </div>

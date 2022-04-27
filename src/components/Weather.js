@@ -1,24 +1,6 @@
 import React from 'react'
-import {useEffect,useState,useContext} from 'react'
-import { getWeather } from './Api';
 
-function Weather({latlon}) {
-    const[weather,setWeather]=useState([])
-    const[weatherloader,setWeatherloader]=useState(true)
-     
-     useEffect(()=>{
-       (async()=>{
-        setWeatherloader(true)
-        if(latlon.lat && latlon.lon){
-            const weather=await getWeather(latlon)
-            setWeather(weather)
-            setWeatherloader(false)
-            
-        }  
-       })();
-         
-     },[latlon])
-
+function Weather({weather}) {
   return (
     <>
         <div key={weather.id}>
