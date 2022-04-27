@@ -4,11 +4,10 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Stack from "@mui/material/Stack";
 import City from './components/City';
+import Weather from './components/Weather'
 import {Spinner} from 'react-bootstrap'
 import {Box} from '@mui/system'
-import {getCities, getCountries,getLatlon,getWeather} from './components/Api';
-import Weather from './components/Weather.js';
-
+import {getCountries,getCities,getWeather,getLatlon} from './components/Api'
 
 function App() {
 const[countries,setCountries]=useState([])
@@ -23,10 +22,10 @@ const[weather,setWeather]=useState([]);
 
   useEffect(()=>{  
     (async () => {
-			const countries = await getCountries();
-      setLoadingcountries(false)
-			setCountries(countries)  
-		})();
+	const countries = await getCountries();
+      	setLoadingcountries(false)
+	setCountries(countries)  
+    })();
     
  },[])
  useEffect(()=>{ 
@@ -82,7 +81,6 @@ const[weather,setWeather]=useState([]);
     })();
       
   },[latLon])
-
  
  const getCurrcou=(val)=>{
     setCurrcou(val.name) 
@@ -121,7 +119,6 @@ const[weather,setWeather]=useState([]);
                 :<Weather weather={weather}/>
                 )
                 }
-                
          </Stack>
          }
     </div>
