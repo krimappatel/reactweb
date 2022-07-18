@@ -55,7 +55,7 @@ const[weather,setWeather]=useState([]);
         
     //     setCitiesloader(false) 
         
-    // } 
+    // }
  },[currcou])
 
  useEffect(() => {
